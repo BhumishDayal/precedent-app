@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stage · Precedent</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f8b80'/%3E%3Cpath d='M10 24V8h7a5 5 0 0 1 0 10h-7' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #0a0d13; --panel: #121722; --line: #222a3b; --text: #eef1f7; --dim: #8b95a9; --faint: #7c8699;
+    --accent: #5eead4; --warn: #fbbf24; --bad: #f87171; --good: #4ade80; --blue: #3b82f6;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { font-size: clamp(10px, min(1.0417vw, 1.852vh), 28px); }
+  html { background: var(--bg); }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 1rem/1.35 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { padding: 0.8rem 1.8rem 0.2rem; display: flex; justify-content: space-between; align-items: baseline; gap: 1.2rem; }
+  h1 { margin: 0; font-size: 2rem; letter-spacing: -0.02em; font-weight: 800; }
+  h1 span { color: var(--dim); font-weight: 400; font-size: 1.5rem; margin-left: 0.5rem; }
+  .hdrRight { display: flex; align-items: baseline; gap: 0.8rem; }
+  #reset { background: transparent; color: var(--faint); border: 1px solid var(--line); border-radius: 0.3rem;
+           font: inherit; font-size: 0.6rem; padding: 0.15rem 0.5rem; cursor: pointer; }
+  #reset:hover { color: var(--dim); border-color: var(--faint); }
+  #source { color: var(--faint); font-size: 0.75rem; white-space: nowrap; }
+  .row { padding: 0.4rem 1.8rem; display: grid; gap: 1rem; }
+  .row1 { grid-template-columns: 0.95fr 1.25fr; }
+  .row2 { grid-template-columns: 0.85fr 1.35fr 0.85fr; }
+  .row3 { grid-template-columns: 1.4fr 1fr; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 0.7rem; padding: 0.8rem 1.1rem; min-width: 0; }
+  h2 { margin: 0 0 0.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: .09em; color: var(--dim); font-weight: 650; }
+  h2 .sub { text-transform: none; letter-spacing: 0; }
+  .sub { color: var(--dim); font-size: 0.75rem; font-weight: 400; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 0.4rem 0.4rem; border-bottom: 1px solid var(--line); }
+  th { color: var(--dim); font-weight: 500; font-size: 0.75rem; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .mono { font-family: ui-monospace, Menlo, monospace; }
+  .empty { color: var(--faint); font-size: 0.85rem; padding: 0.7rem 0.2rem; }
+
+  #stage td { font-size: 1.45rem; padding: 0.4rem 0.4rem; }
+  #stage td:first-child { font-size: 1.05rem; line-height: 1.2; }
+  #stage td:first-child small { display: block; color: var(--dim); font-size: 0.7rem; }
+  #stage tr.us td { color: var(--accent); font-weight: 750; }
+  #stage tr.us td:first-child small { font-weight: 400; }
+  #stage td.share { font-weight: 800; }
+  #stage tr.base td.share { color: var(--dim); }
+  .hours { margin-top: 0.4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+  .big { font-size: 2.6rem; font-weight: 850; color: var(--accent); line-height: 1.05; font-variant-numeric: tabular-nums; }
+  .big.money { color: var(--good); }
+  .label { color: var(--dim); font-size: 0.75rem; }
+  .slider { margin-top: 0.5rem; display: flex; align-items: center; gap: 0.7rem; font-size: 0.85rem; color: var(--dim); }
+  .slider b { color: var(--text); min-width: 3.5rem; }
+  input[type=range] { flex: 1; accent-color: var(--accent); height: 1.3rem; }
+
+  .live { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 1rem; position: relative; }
+  .drive { font-size: 0.85rem; color: var(--dim); }
+  .drive b { color: var(--text); font-family: ui-monospace, Menlo, monospace; font-size: 0.95rem; }
+  .evidence { font-size: 1.5rem; margin: 0.4rem 0 0.6rem; line-height: 1.25; font-weight: 600; }
+  .evidence em { font-style: normal; color: var(--bad); font-weight: 850; }
+  .evidence small { display: block; font-size: 0.8rem; color: var(--dim); font-weight: 400; margin-top: 0.3rem; }
+  #send { background: var(--accent); color: #04221d; border: 0; border-radius: 0.6rem; padding: 0.8rem 1.7rem; width: 100%;
+          font: inherit; font-weight: 850; font-size: 1.4rem; cursor: pointer; box-shadow: 0 0 0 0 rgba(94,234,212,.5); }
+  #send:hover { filter: brightness(1.08); }
+  #send:disabled { opacity: .55; cursor: wait; }
+  #sendStatus { margin-top: 0.4rem; color: var(--dim); font-size: 0.75rem; min-height: 1rem; }
+  .sims { white-space: nowrap; flex-shrink: 0; margin-top: 0; display: flex; gap: 0.3rem; align-items: center; font-size: 0.6rem; color: var(--faint); }
+  .sims button { background: transparent; color: var(--faint); border: 1px solid var(--line); border-radius: 0.3rem;
+                 font: inherit; font-size: 0.6rem; padding: 0.15rem 0.4rem; cursor: pointer; }
+  .sims button:hover { color: var(--dim); border-color: var(--faint); }
+
+  .phone { background: #070a10; border: 1px solid var(--line); border-radius: 1.3rem; padding: 0.6rem 0.7rem 0.7rem;
+           display: flex; flex-direction: column; gap: 0.45rem; contain: size; min-height: 25rem; } /* contain: size keeps a long thread from growing the row */
+  .phone .top { text-align: center; font-size: 0.8rem; color: var(--text); font-weight: 700; padding-bottom: 0.35rem; border-bottom: 1px solid #141a26; }
+  .phone .top span { color: var(--dim); font-weight: 400; }
+  .strip { display: flex; flex-direction: column; gap: 0.3rem; max-height: 6.6rem; overflow: hidden; flex-shrink: 0;
+           padding-bottom: 0.4rem; border-bottom: 1px dashed #1c2332; }
+  .strip:empty { display: none; }
+  .strip .lbl { font-size: 0.6rem; color: var(--faint); text-transform: uppercase; letter-spacing: .08em; }
+  .strip .bubble { font-size: 0.72rem; padding: 0.35rem 0.6rem; max-width: 96%; }
+  .strip .bubble.in { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .strip .bubble.out { font-size: 0.85rem; padding: 0.2rem 0.7rem; }
+  .strip .typing { font-size: 0.65rem; }
+  #techThread { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 0.45rem; padding-right: 0.2rem; position: relative; }
+  #techThread .empty { margin: auto; }
+  .msg { flex-shrink: 0; max-height: 16rem; overflow-y: auto; max-width: 92%; padding: 0.45rem 0.7rem; border-radius: 0.8rem; font-size: 0.78rem; line-height: 1.35; white-space: pre-wrap;
+         word-break: break-word; animation: pop .3s ease-out; }
+  .msg.them { background: #262c38; align-self: flex-start; border-bottom-left-radius: 0.2rem; }
+  .msg.me { background: var(--blue); align-self: flex-end; border-bottom-right-radius: 0.2rem; font-weight: 600; }
+  .msg .ev { font-family: ui-monospace, Menlo, monospace; font-size: 0.7rem; color: #cbd5e1; }
+  .msg time { display: block; font-size: 0.55rem; opacity: .6; margin-top: 0.15rem; }
+  .chips { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+  .chips button { background: #1a2130; color: var(--text); border: 1px solid var(--line); border-radius: 999px; font: inherit;
+                  font-size: 0.7rem; padding: 0.2rem 0.6rem; cursor: pointer; }
+  .chips button:hover { border-color: var(--accent); color: var(--accent); }
+  #techForm { display: flex; gap: 0.4rem; }
+  #techInput { flex: 1; min-width: 0; background: #11161f; color: var(--text); border: 1px solid var(--line); border-radius: 999px;
+               font: inherit; font-size: 0.8rem; padding: 0.35rem 0.8rem; outline: none; }
+  #techInput:focus { border-color: var(--accent); }
+  #techForm button { background: var(--blue); color: white; border: 0; border-radius: 999px; font: inherit; font-weight: 700;
+                     font-size: 0.75rem; padding: 0.3rem 0.9rem; cursor: pointer; }
+  a.inc { color: var(--accent); text-decoration: none; font-size: 0.75rem; font-weight: 650; white-space: nowrap; }
+  a.inc:hover { text-decoration: underline; }
+  .thread { display: flex; flex-direction: column; gap: 0.5rem; flex: 1; justify-content: flex-end; }
+  .bubble { max-width: 88%; padding: 0.55rem 0.75rem; border-radius: 0.9rem; font-size: 0.85rem; line-height: 1.3; animation: pop .35s ease-out; }
+  .bubble.in { background: #262c38; align-self: flex-start; border-bottom-left-radius: 0.25rem; }
+  .bubble.out { background: var(--blue); align-self: flex-end; border-bottom-right-radius: 0.25rem; font-size: 1.3rem; font-weight: 800; padding: 0.4rem 1rem; }
+  .typing { align-self: flex-end; color: var(--faint); font-size: 0.7rem; }
+  .typing i { animation: blink 1.2s infinite; font-style: normal; }
+  @keyframes blink { 50% { opacity: .2; } }
+  @keyframes pop { from { transform: scale(.85) translateY(0.4rem); opacity: 0; } to { transform: none; opacity: 1; } }
+  #bannerSlot { min-height: 4.2rem; margin-top: 0.2rem; }
+  .statusRow { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-top: 0.4rem; min-height: 1.1rem; }
+  .statusRow #sendStatus { margin-top: 0; }
+  #actions { margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.3rem; min-height: 3.5rem; }
+  .act { display: flex; gap: 0.5rem; align-items: baseline; font-size: 0.8rem; line-height: 1.3; animation: pop .35s ease-out; }
+  .act .who { flex: 0 0 3.7rem; font-weight: 800; color: var(--accent); font-size: 0.7rem; text-transform: uppercase; letter-spacing: .06em; }
+  .act .what { flex: 1; min-width: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .act .st { font-size: 0.6rem; font-weight: 700; padding: 1px 0.4rem; border-radius: 49.95rem; background: #1d2b1f; color: var(--good); white-space: nowrap; }
+  .act .st.warn { background: #3b2f12; color: var(--warn); }
+  .act .st.bad { background: #3a1616; color: var(--bad); }
+  .act.wait { color: var(--faint); font-size: 0.75rem; }
+  .bubble.call { background: #10251f; border: 1px solid #1f4d40; align-self: flex-start; border-bottom-left-radius: 0.25rem; }
+  .bubble.call b { color: var(--accent); }
+  .bubble.call .tx { display: block; margin-top: 0.3rem; color: var(--dim); font-size: 0.75rem; font-style: italic; }
+  .bubble.out.said { font-size: 1rem; }
+  .ring { display: inline-block; animation: blink 1s infinite; }
+  .partners { padding: 0 1.8rem 0.2rem; font-size: 0.75rem; color: var(--dim); }
+  .partners b { color: var(--text); font-weight: 700; }
+  .partners .sep { color: var(--faint); margin: 0 0.5rem; }
+  #banner { border-radius: 0.6rem; padding: 0.5rem 0.8rem; font-size: 1.1rem; font-weight: 800; display: none; }
+  #banner.on { display: block; animation: pop .45s ease-out, glow 2.5s ease-out; }
+  #banner small { display: block; font-size: 0.7rem; font-weight: 500; opacity: .85; margin-top: 0.1rem; }
+  #banner.swap { background: #0f2a28; color: #99f6e4; border: 1px solid var(--accent); }
+  #banner.wait { background: #2a1f0c; color: #fde68a; border: 1px solid var(--warn); }
+  #banner.show { background: #14281a; color: #bbf7d0; border: 1px solid var(--good); }
+  #banner.unclear { background: #2a1f0c; color: #fde68a; border: 1px solid var(--warn); }
+  @keyframes glow { from { box-shadow: 0 0 2rem 0.3rem rgba(94,234,212,.55); } to { box-shadow: none; } }
+
+  .tag { display: inline-block; padding: 0.1rem 0.45rem; border-radius: 49.95rem; font-size: 0.65rem; font-weight: 650; margin-left: 0.4rem; vertical-align: middle; }
+  .tag.circ { background: #3b2f12; color: var(--warn); }
+  .tag.swap { background: #0f2a28; color: var(--accent); }
+  .tag.wait { background: #3b2f12; color: var(--warn); }
+  .tag.show { background: #1d2b1f; color: var(--good); }
+
+  .compact td, .compact th { padding: 0.2rem 0.3rem; font-size: 0.75rem; white-space: nowrap; }
+  .compact th { font-size: 0.65rem; }
+  .compact td.empty { white-space: normal; }
+  .compact td.died { font-weight: 750; color: var(--bad); }
+  .model { color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 10rem; }
+  #kwStatus { font-size: 0.75rem; white-space: nowrap; margin-left: 0.3rem; }
+  #kwStatus.kwlive { color: var(--good); font-weight: 700; }
+  #kwStatus.kwlive::before { content: ""; display: inline-block; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--good);
+                           margin-right: 0.35rem; vertical-align: middle; animation: blink 1.6s infinite; }
+  #kwQuery { margin: 0.3rem 0 0; font-size: 0.6rem; color: var(--faint); }
+  #kwQuery summary { cursor: pointer; }
+  #kwQuery pre { white-space: pre-wrap; margin: 0.2rem 0 0; font-size: 0.55rem; }
+  #kwNote { font-size: 0.65rem; color: var(--faint); margin-top: 0.3rem; }
+  svg text { fill: var(--dim); font-size: 13px; }
+
+  #patterns td { font-size: 0.85rem; }
+  #patterns tr.circ td { color: var(--dim); }
+  .rate-bar { display: inline-block; height: 0.45rem; background: var(--accent); border-radius: 0.25rem; vertical-align: middle; margin-right: 0.4rem; }
+  footer { padding: 0.3rem 1.8rem 1.1rem; color: var(--faint); font-size: 0.7rem; display: flex; justify-content: space-between; }
+
+  #toast { position: fixed; right: 1.2rem; bottom: 1.2rem; background: #2a1f0c; color: var(--warn); border: 1px solid #5c4716;
+           border-radius: 0.5rem; padding: 0.6rem 0.9rem; font-size: 0.8rem; opacity: 0; transform: translateY(0.5rem); transition: .25s; pointer-events: none; }
+  #toast.on { opacity: 1; transform: none; }
+  @media (max-width: 900px) { .row1, .row2, .row3, .live { grid-template-columns: 1fr; } header { flex-direction: column; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Precedent<span>Every drive warning, answered with the track record of every drive like it.</span></h1>
+  <div class="hdrRight"><div id="source">Loading…</div><button id="reset" title="Archive alerts, decisions and actions so the live panel starts clean (key: R)">Reset</button></div>
+</header>
+<div class="partners"><b>Keewano</b>: drive memory and live counts<span class="sep">·</span><b>Dial</b>: texts and calls to the on-call<span class="sep">·</span><b>Darwin</b>: finds the agent to act<span class="sep">·</span><b>Sparta</b>: proves the action agent is safe</div>
+
+<div class="row row1">
+  <section>
+    <h2>Backtest <span class="sub" id="cutoff"></span></h2>
+    <table id="stage">
+      <thead><tr><th></th><th class="num">Checks a human does</th><th class="num">Failures caught</th><th class="num">Share that died</th></tr></thead>
+      <tbody>
+        <tr class="base"><td>Check every warning<small>what happens today</small></td><td class="num" id="N">–</td><td class="num" id="L">–</td><td class="num share" id="sN">–</td></tr>
+        <tr class="us"><td>Precedent urgent alert<small id="uRule"></small></td><td class="num" id="uM">–</td><td class="num" id="uK">–</td><td class="num share" id="uS">–</td></tr>
+        <tr class="us"><td>Precedent morning swap list<small id="sRule"></small></td><td class="num" id="sM">–</td><td class="num" id="sK">–</td><td class="num share" id="sS">–</td></tr>
+      </tbody>
+    </table>
+    <div class="hours">
+      <div><div class="big" id="hours">–</div><div class="label">engineer hours back = (N − M<sub>swap list</sub>) × <span id="minLbl">15</span> min</div></div>
+      <div><div class="big money" id="money">–</div><div class="label">remote-hands cost avoided at $100/hr</div></div>
+    </div>
+    <div class="slider"><span>Minutes per check</span><input type="range" id="minutes" min="5" max="60" step="1" value="15"><b id="minVal">15 min</b></div>
+  </section>
+
+  <section class="live">
+    <div>
+      <h2>Live: a drive just warned</h2>
+      <div class="drive" id="drive">Loading…</div>
+      <div class="evidence" id="evidence"></div>
+      <button id="send" title="Key: S">Send alert</button>
+      <div class="statusRow"><div id="sendStatus" aria-live="polite"></div><a class="inc" id="incLink" target="_blank" hidden>Open incident ↗</a>
+        <div class="sims"><span title="Keys 1, 2, 3">Simulate reply:</span> <button data-c="1" aria-label="Simulate reply 1 (swap)">1</button><button data-c="2" aria-label="Simulate reply 2 (wait)">2</button><button data-c="3" aria-label="Simulate reply 3 (see them)">3</button></div></div>
+      <div id="bannerSlot"><div id="banner"></div></div>
+      <div id="actions"></div>
+    </div>
+    <div class="phone">
+      <div class="top">Technician inbox <span id="techNum">· not connected</span></div>
+      <div class="strip" id="thread"></div>
+      <div id="techThread"><div class="empty">No messages yet</div></div>
+      <div class="chips"><button data-t="1">1 Swap</button><button data-t="2">2 Wait</button><button data-t="3">3 Similar drives</button><button data-t="details">Details</button></div>
+      <form id="techForm" autocomplete="off"><input id="techInput" placeholder="Reply as the technician…" aria-label="Reply as the technician"><button>Send</button></form>
+    </div>
+  </section>
+</div>
+
+<div class="row row2">
+  <section>
+    <h2>Calibration <span class="sub">predicted vs. actually died</span></h2>
+    <svg id="calib" viewBox="0 0 520 330" width="100%"></svg>
+  </section>
+  <section>
+    <h2>Morning swap list <span class="sub">warned this week, ranked by what happened to drives like them</span></h2>
+    <table class="compact" id="swaplist">
+      <thead><tr><th>Serial</th><th>Model</th><th>Pattern</th><th class="num">Like it</th></tr></thead>
+      <tbody><tr><td colspan="4" class="empty">Loading…</td></tr></tbody>
+    </table>
+  </section>
+  <section>
+    <h2>Keewano <span id="kwStatus" class="sub">Checking…</span></h2>
+    <table class="compact" id="kwTable"><tbody></tbody></table>
+    <div id="kwNote"></div>
+    <details id="kwQuery" hidden><summary>query</summary><pre class="mono"></pre></details>
+  </section>
+</div>
+
+<div class="row row3">
+  <section>
+    <h2>Top warning patterns <span class="sub">by drives that died within the horizon</span></h2>
+    <table id="patterns">
+      <thead><tr><th>Model</th><th>Pattern (SMART attrs : severity)</th><th class="num">Warnings</th><th class="num">Died</th><th>Rate</th></tr></thead>
+      <tbody><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+    </table>
+  </section>
+  <section>
+    <h2>Recent alerts &amp; decisions</h2>
+    <table class="compact" id="alerts"><tbody><tr><td class="empty">No alerts sent yet.</td></tr></tbody></table>
+  </section>
+</div>
+
+<footer><span>Data: Backblaze drive stats, January to June 2026, 363,548 drives</span><span>Precedent</span></footer>
+<div id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = n => (n == null ? "–" : Number(n).toLocaleString());
+const pct = (x, d = 0) => (x == null || isNaN(x) ? "–" : (x * 100).toFixed(d) + "%");
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const getJSON = async url => { const r = await fetch(url); if (!r.ok) throw new Error(url + " " + r.status); return r.json(); };
+const DIGIT = {swap: "1", wait: "2", show: "3"};
+const WORD = {swap: "SWAP", wait: "WAIT", show: "SHOW ME"};
+
+function toast(msg) {
+  const t = $("toast"); t.textContent = msg; t.classList.add("on");
+  clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove("on"), 3500);
+}
+
+let bt = null;
+function renderHours() {
+  const min = +$("minutes").value;
+  $("minVal").textContent = min + " min"; $("minLbl").textContent = min;
+  if (!bt) return;
+  const hours = Math.max(0, bt.swaplist.N_checks_today - bt.swaplist.M_checks_precedent) * min / 60;
+  $("hours").textContent = fmt(Math.round(hours)) + " h";
+  $("money").textContent = "$" + fmt(Math.round(hours * 100));
+}
+function renderBacktest(b) {
+  bt = b;
+  const u = b.urgent, s = b.swaplist;
+  $("cutoff").textContent = `· rules learned before ${u.cutoff}, scored on every warning after it`;
+  $("N").textContent = fmt(u.N_checks_today);
+  $("L").textContent = fmt(u.L_failures);
+  $("sN").textContent = pct(u.L_failures / u.N_checks_today, 1);
+  for (const [k, t] of [["u", u], ["s", s]]) {
+    $(k + "Rule").textContent = `≥${t.min_n} identical drives, ≥${pct(t.min_rate)} died`;
+    $(k + "M").textContent = fmt(t.M_checks_precedent);
+    $(k + "K").textContent = fmt(t.K_caught);
+    $(k + "S").textContent = t.M_checks_precedent ? pct(t.K_caught / t.M_checks_precedent) : "–";
+  }
+  renderHours();
+  renderCalib(s.calibration || []);
+}
+
+function renderCalib(rows) {
+  const W = 520, H = 330, l = 62, r = 14, t = 12, bm = 44, w = W - l - r, h = H - t - bm;
+  const top = Math.max(0.6, ...rows.map(d => Math.min(1, d.bucket + 0.1)), ...rows.map(d => d.actual)); // zoom to the data
+  const x = v => l + v / top * w, y = v => t + (1 - v / top) * h;
+  const maxN = Math.max(1, ...rows.map(d => d.n));
+  let s = "";
+  for (let v = 0; v <= top + 1e-9; v += 0.1) {
+    s += `<line x1="${x(0)}" x2="${x(top)}" y1="${y(v)}" y2="${y(v)}" stroke="#1c2332"/>`;
+    s += `<text x="${l - 8}" y="${y(v) + 4}" text-anchor="end">${Math.round(v * 100)}%</text>`;
+    s += `<text x="${x(v)}" y="${H - bm + 20}" text-anchor="middle">${Math.round(v * 100)}%</text>`;
+  }
+  s += `<line x1="${x(0)}" y1="${y(0)}" x2="${x(top)}" y2="${y(top)}" stroke="#8b95a9" stroke-dasharray="6 6"/>`;
+  s += `<text x="${x(top) - 4}" y="${y(top) + 28}" text-anchor="end">perfect calibration</text>`;
+  const pts = rows.map(d => ({cx: x(Math.min(top, d.bucket + 0.05)), cy: y(d.actual), d}));
+  if (pts.length > 1) s += `<polyline fill="none" stroke="#5eead4" stroke-width="3" points="${pts.map(p => p.cx + "," + p.cy).join(" ")}"/>`;
+  for (const p of pts) {
+    const rad = 5 + 13 * Math.sqrt(p.d.n / maxN);
+    s += `<circle cx="${p.cx}" cy="${p.cy}" r="${rad}" fill="#5eead4" fill-opacity=".3" stroke="#5eead4" stroke-width="2"><title>predicted ${pct(p.d.bucket)}–${pct(p.d.bucket + 0.1)}: ${pct(p.d.actual)} died (n=${fmt(p.d.n)})</title></circle>`;
+  }
+  if (!rows.length) s += `<text x="${l + w / 2}" y="${t + h / 2}" text-anchor="middle">no calibration data yet</text>`;
+  s += `<text x="${l + w / 2}" y="${H - 4}" text-anchor="middle">predicted (history of identical drives)</text>`;
+  s += `<text transform="translate(14 ${t + h / 2}) rotate(-90)" text-anchor="middle">actually died</text>`;
+  $("calib").innerHTML = s;
+}
+
+function renderPatterns(rows) {
+  $("patterns").querySelector("tbody").innerHTML = rows.length ? rows.slice(0, 8).map(p => `
+    <tr class="${p.circular ? "circ" : ""}">
+      <td>${esc(p.model)}</td>
+      <td><b class="mono">${esc(p.pattern)}</b>${p.circular ? '<span class="tag circ">circular (187)</span>' : ""}</td>
+      <td class="num">${fmt(p.n)}</td><td class="num">${fmt(p.died)}</td>
+      <td><span class="rate-bar" style="width:${((p.rate || 0) * 8).toFixed(2)}rem"></span>${pct(p.rate)}</td>
+    </tr>`).join("") : `<tr><td colspan="5" class="empty">No patterns yet.</td></tr>`;
+}
+function renderSwaplist(rows) {
+  $("swaplist").querySelector("tbody").innerHTML = rows.length ? rows.map(r => `
+    <tr><td class="mono">${esc(r.serial)}</td><td class="model">${esc(r.model)}</td>
+        <td class="mono">${esc(r.pattern)}${r.circular ? '<span class="tag circ">187</span>' : ""}</td>
+        <td class="num died">${fmt(r.died)} of ${fmt(r.n)} died</td></tr>`).join("")
+    : `<tr><td colspan="4" class="empty">Swap list appears once the drive history is loaded.</td></tr>`;
+}
+function renderKeewano(k) {
+  const st = $("kwStatus"), rows = (k && k.rows) || [];
+  if (k && k.connected) {
+    st.textContent = "Live from Keewano"; st.className = "sub kwlive";
+    const NUM = new Set(["warnings", "died", "n"]);
+    const cols = rows.length ? Object.keys(rows[0]) : [];
+    $("kwTable").innerHTML = rows.length
+      ? `<thead><tr>${cols.map(c => `<th class="${NUM.has(c) ? "num" : ""}">${esc(c)}</th>`).join("")}</tr></thead><tbody>` +
+        rows.slice(0, 9).map(r => `<tr>${cols.map(c => `<td class="${NUM.has(c) ? "num" + (c === "died" ? " died" : "") : c === "pattern" ? "mono" : "model"}">${esc(NUM.has(c) ? fmt(r[c]) : r[c])}</td>`).join("")}</tr>`).join("") + "</tbody>"
+      : `<tbody><tr><td class="empty">Connected. Waiting for ingested drive events (Keewano has ~5 min of ingest lag).</td></tr></tbody>`;
+    const decs = (k.decisions || []).filter(d => d.decision);
+    $("kwNote").textContent = decs.length ? "Decisions in Keewano: " + decs.map(d => `${d.decision} ${fmt(d.n)}`).join(" · ") : "";
+    $("kwQuery").hidden = !k.query; $("kwQuery").querySelector("pre").textContent = k.query || "";
+  } else {
+    st.textContent = "Not connected on this server"; st.className = "sub";
+    $("kwTable").innerHTML = `<tbody><tr><td class="empty">Every warning, alert and decision is streamed to Keewano as a drive event.</td></tr></tbody>`;
+    $("kwNote").textContent = ""; $("kwQuery").hidden = true;
+  }
+}
+
+let pinned = null, lastAlert = null, decisionsSeen = null;
+function renderPinned(d) {
+  pinned = d;
+  const p = d.precedent || {};
+  $("drive").innerHTML = `Drive <b>${esc(d.serial)}</b> · <b>${esc(d.model)}</b><br>SMART warning <b>${esc(d.pattern)}</b>`;
+  $("evidence").innerHTML = p.n
+    ? `${fmt(p.n)} drives like it.<br><em>${fmt(p.died)} died</em> within ${fmt(d.horizon_days || 30)} days.<small>${pct(p.rate)} of identical drives with this exact warning${p.scope === "any model" ? " (any model)" : ""}</small>`
+    : `<span class="sub">No precedent for this pattern yet.</span>`;
+}
+
+const isCall = a => a && (a.channel === "call" || a.channel === "both");
+let callState = null, lastDecisions = [];
+function callBubble(c) {
+  const st = String((c && (c.status || c.state)) || "dialing").replace(/[_-]/g, " ");
+  let tx = c && (c.transcript_snippet || c.snippet || c.transcript);
+  if (Array.isArray(tx)) tx = tx.map(t => typeof t === "string" ? t : `${t.role || t.speaker || ""}: ${t.text || t.content || ""}`).join(" / ");
+  if (tx && typeof tx !== "string") tx = JSON.stringify(tx);
+  const live = /ring|dial|progress|queued|initiat|active/i.test(st);
+  return `<div class="bubble call"><b>${live ? '<span class="ring">📞</span>' : "📞"} Voice call from Precedent</b> · ${esc(st)}` +
+    (tx ? `<span class="tx">“${esc(String(tx).slice(-220))}”</span>` : "") + `</div>`;
+}
+function renderThread() {
+  if (!lastAlert) return;
+  const decisions = lastDecisions;
+  let h = `<div class="lbl">On-call · ${isCall(lastAlert) ? "voice call" : "text"}</div>`;
+  if (lastAlert.text && lastAlert.channel !== "call") h += `<div class="bubble in">${esc(lastAlert.text)}</div>`;
+  if (isCall(lastAlert)) h += callBubble(callState);
+  const cd = callState && callState.decision;
+  if (!decisions.length && cd === "unclear") h += `<div class="bubble out said" style="background:#5c4716">no clear answer</div>`;
+  for (const d of decisions.slice(-1)) h += isCall(lastAlert) && lastAlert.channel === "call"
+    ? `<div class="bubble out said">said “${esc(d.choice)}”</div>`
+    : `<div class="bubble out">${DIGIT[d.choice] || esc(d.choice)}</div>`;
+  if (!decisions.length && cd !== "unclear") h += `<div class="typing">${isCall(lastAlert) ? "waiting for an answer" : "waiting for reply"} <i>●●●</i></div>`;
+  $("thread").innerHTML = h;
+}
+
+function showBanner(d) {
+  const b = $("banner");
+  b.className = ""; void b.offsetWidth;  // restart the animation
+  b.className = "on " + (d.choice || "");
+  if (d.choice === "unclear") {
+    b.innerHTML = `No clear answer on the call: details sent to the technician<small>${esc(d.serial)} · ${fmt(d.died)} of ${fmt(d.n)} like it died</small>`;
+    return;
+  }
+  const how = lastAlert && lastAlert.channel === "call" ? "said on the call" : `replied ${DIGIT[d.choice] || "?"}`;
+  const kw = d.keewano_logged === true ? ", logged to Keewano" : d.keewano_logged === false ? ", saved locally" : "";
+  b.innerHTML = `On-call ${how}: ${WORD[d.choice] || esc(d.choice)}${kw}` +
+    `<small>${esc(d.serial)} · ${fmt(d.died)} of ${fmt(d.n)} like it died · ${new Date(d.ts).toLocaleTimeString()}</small>`;
+}
+
+async function sendAlert() {
+  $("send").disabled = true; $("sendStatus").textContent = "sending…";
+  try {
+    let r = await fetch("/alerts/send", {method: "POST"});
+    if (r.status === 422) r = await fetch("/alerts/send", {method: "POST", headers: {"Content-Type": "application/json"}, body: "{}"});
+    if (!r.ok) throw new Error(`${r.status} ${(await r.text()).slice(0, 120)}`);
+    const out = await r.json();
+    lastAlert = {...(out.alert || {}), text: out.text, channel: out.channel || (out.alert || {}).channel || "sms"};
+    callState = null; lastDecisions = []; callPollUntil = isCall(lastAlert) ? Date.now() + 180000 : 0;
+    showIncidentLink();
+    renderThread(); renderActions([]);
+    $("banner").className = "";
+    $("sendStatus").textContent = isCall(lastAlert) ? "Calling the on-call now…" : "Sent. Reply 1 / 2 / 3 from the phone.";
+    if (out.dry_run) $("sendStatus").textContent += " (dry run)";
+  } catch (e) {
+    $("sendStatus").textContent = "Send failed: " + e.message;
+    toast("Send failed. Use Simulate reply instead.");
+  }
+  $("send").disabled = false;
+}
+
+async function simulate(choice) {
+  try {
+    const r = await fetch("/demo/simulate-reply", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({choice})});
+    if (r.status === 404) return toast("Simulated replies aren't available on this server");
+    if (!r.ok) return toast(`Simulated reply failed (HTTP ${r.status})`);
+    pollDecisions();
+  } catch (e) { toast("Simulated reply failed: " + e.message); }
+}
+
+async function pollDecisions() {
+  let rows;
+  try { rows = (await getJSON("/api/decisions")).rows; } catch (e) { return; }
+  const key = d => d.ts + d.alert_id + d.choice;
+  if (decisionsSeen === null) {           // first load: remember what's old, don't animate it
+    decisionsSeen = new Set(rows.map(key));
+  } else {
+    const fresh = rows.filter(d => !decisionsSeen.has(key(d)));
+    fresh.forEach(d => decisionsSeen.add(key(d)));
+    if (fresh.length) { showBanner(fresh[0]); pollAlerts(); }
+  }
+  if (lastAlert) { lastDecisions = rows.filter(d => d.alert_id === lastAlert.alert_id).reverse(); renderThread(); }
+}
+
+const PARTNER = {darwin: "Darwin", sparta: "Sparta", keewano: "Keewano", dial: "Dial"};
+const DEFAULT_WHAT = {darwin: "searched agents for a warranty return", sparta: "remote-hands ticket"};
+function renderActions(rows) {
+  const el = $("actions");
+  if (!lastAlert) { el.innerHTML = ""; return; }
+  const mine = rows.filter(r => r.alert_id === lastAlert.alert_id);
+  if (!mine.length) {
+    el.innerHTML = lastDecisions.some(d => d.choice === "swap")
+      ? `<div class="act wait"><span class="who">Actions</span><span class="what">Darwin and Sparta are acting on the swap…</span></div>` : "";
+    return;
+  }
+  mine.sort((a, b) => String(a.ts).localeCompare(String(b.ts)));  // oldest first, whatever order the API used
+  const latest = Object.values(Object.fromEntries(mine.map(r => [r.sponsor, r])));  // one line per sponsor
+  el.innerHTML = latest.slice(-3).map(r => {
+    const st = String(r.status || "ok"), cls = /fail|error/i.test(st) ? "bad" : /retry|dry|pending|gap/i.test(st) ? "warn" : "";
+    const what = r.detail ? (typeof r.detail === "string" ? r.detail : JSON.stringify(r.detail)) : DEFAULT_WHAT[r.sponsor] || "";
+    return `<div class="act"><span class="who">${esc(PARTNER[r.sponsor] || r.sponsor)}</span>` +
+           `<span class="what">${esc(what.slice(0, 160))}</span><span class="st ${cls}">${esc(st.replace(/_/g, " "))}</span></div>`;
+  }).join("");
+}
+let actions404 = false;
+async function pollActions() {
+  if (actions404) return;
+  try {
+    const r = await fetch("/api/actions");
+    if (r.status === 404) { actions404 = true; return toast("The actions feed isn't available on this server"); }
+    if (r.ok) renderActions((await r.json()).rows || []);
+  } catch (e) { /* server restarting */ }
+}
+let callPollUntil = 0, call404 = false, unclearShown = null;
+async function pollCall() {
+  if (!lastAlert || !isCall(lastAlert) || call404 || Date.now() > callPollUntil) return;
+  try {
+    const r = await fetch("/api/call-status");
+    if (r.status === 404) { call404 = true; return toast("Call status isn't available on this server"); }
+    if (!r.ok) return;
+    const c = await r.json();
+    if (c && c.alert_id && c.alert_id !== lastAlert.alert_id) return;  // an older call
+    callState = c; renderThread();
+    if (c && c.decision === "unclear" && unclearShown !== lastAlert.alert_id && !lastDecisions.length) {
+      unclearShown = lastAlert.alert_id; showBanner({...lastAlert, choice: "unclear"});
+    }
+  } catch (e) { /* retry next tick */ }
+}
+
+function alertTextFor(a) {  // alert rows don't store the text; mirror the SMS wording
+  return `${a.model} drive ${a.serial} just showed ${a.pattern}. ${fmt(a.n)} drives like this, ${fmt(a.died)} died within ${(pinned && pinned.horizon_days) || 30} days. Reply 1 to swap, 2 to wait, 3 to see them.`;
+}
+async function restoreLive() {  // a page refresh keeps the current alert, its reply and its actions
+  try {
+    const a = (await getJSON("/api/alerts")).rows[0];
+    if (!a) return;
+    lastAlert = {...a, channel: a.channel || "sms"};
+    lastAlert.text = alertTextFor(lastAlert);
+    if (isCall(lastAlert)) callPollUntil = Date.now() + 180000;
+    showIncidentLink();
+    const decs = (await getJSON("/api/decisions")).rows.filter(d => d.alert_id === a.alert_id);
+    lastDecisions = decs.slice().reverse();
+    if (decs[0]) showBanner(decs[0]);
+    renderThread(); pollCall(); pollActions();
+  } catch (e) { /* nothing to restore */ }
+}
+async function reset() {
+  try {
+    const r = await fetch("/api/reset", {method: "POST"});
+    if (!r.ok) return toast(`Reset failed (HTTP ${r.status})`);
+    lastAlert = null; lastDecisions = []; callState = null; callPollUntil = 0; showIncidentLink();
+    $("thread").innerHTML = ""; techSeen = null; pollTech();
+    $("banner").className = ""; $("actions").innerHTML = ""; $("sendStatus").textContent = "";
+    pollAlerts(); toast("Reset: previous alerts archived");
+  } catch (e) { toast("Reset failed: " + e.message); }
+}
+
+async function pollAlerts() {
+  let alerts, decs;
+  try { [alerts, decs] = await Promise.all([getJSON("/api/alerts"), getJSON("/api/decisions")]); } catch (e) { return; }
+  const byAlert = {};
+  for (const d of decs.rows) (byAlert[d.alert_id] ||= d);
+  $("alerts").innerHTML = alerts.rows.length ? "<tbody>" + alerts.rows.slice(0, 8).map(a => {
+    const d = byAlert[a.alert_id];
+    return `<tr><td class="mono"><a class="inc" href="/incident/${encodeURIComponent(a.alert_id)}" target="_blank">${esc(a.serial)} ↗</a></td><td class="mono model">${esc(a.pattern)}</td>
+      <td class="num">${fmt(a.died)} of ${fmt(a.n)}</td>
+      <td>${d ? `<span class="tag ${esc(d.choice)}">${esc(d.choice)}</span>` : '<span class="sub">no reply</span>'}</td>
+      <td class="num sub">${a.ts ? new Date(a.ts).toLocaleTimeString() : ""}</td></tr>`;
+  }).join("") + "</tbody>" : `<tbody><tr><td class="empty">No alerts sent yet.</td></tr></tbody>`;
+}
+
+function showIncidentLink() {
+  const a = $("incLink");
+  a.hidden = !lastAlert || !lastAlert.alert_id;
+  if (!a.hidden) a.href = "/incident/" + encodeURIComponent(lastAlert.alert_id);
+}
+
+let techNumber = "", techSeen = null, tech404 = false, techNext = 0;
+const digits = s => String(s || "").replace(/\D/g, "");
+const fromTech = r => techNumber ? digits(r.from) === digits(techNumber) : /^(in|inbound|tech|from_tech)$/i.test(r.direction || "");
+function msgBody(body) {  // keep newlines; evidence-looking lines (indented, bullets, tables, serials) in monospace
+  return String(body || "").split("\n").map(line =>
+    /^(\s{2,}|[-•*|>]|\S+\s{2,}\S)|\b\d+ of \d+\b|[A-Z0-9]{8,}/.test(line) && line.length < 120
+      ? `<span class="ev">${esc(line)}</span>` : esc(line)).join("\n");
+}
+async function pollTech() {
+  if (Date.now() < techNext) return;
+  let r;
+  try { r = await fetch("/api/tech/thread"); } catch (e) { return; }
+  if (r.status === 404) {  // say so once, then check rarely
+    if (!tech404) toast("The technician inbox isn't available on this server");
+    tech404 = true; techNext = Date.now() + 15000; return;
+  }
+  if (!r.ok) return;
+  tech404 = false;
+  const out = await r.json(), rows = Array.isArray(out) ? out : (out.rows || []);
+  if (!techNumber && (out.number || out.tech_number)) { techNumber = out.number || out.tech_number; $("techNum").textContent = "· Dial " + techNumber; }
+  rows.sort((a, b) => String(a.ts).localeCompare(String(b.ts)));
+  const key = m => `${m.ts}|${m.from}|${m.body}`;
+  const el = $("techThread");
+  if (!rows.length) { el.innerHTML = `<div class="empty">No messages yet</div>`; techSeen = new Set(); return; }
+  const fresh = techSeen ? rows.filter(m => !techSeen.has(key(m))).length : 0;
+  if (techSeen && !fresh) return;  // nothing new: keep scroll position
+  techSeen = new Set(rows.map(key));
+  el.innerHTML = rows.slice(-30).map(m => `<div class="msg ${fromTech(m) ? "me" : "them"}">${msgBody(m.body)}` +
+    `<time>${m.ts ? new Date(m.ts).toLocaleTimeString() : ""}</time></div>`).join("");
+  const last = el.lastElementChild;  // show the TOP of the newest message
+  el.scrollTop = last ? Math.max(0, last.offsetTop - 4) : el.scrollHeight;
+}
+async function techSend(body) {
+  body = String(body || "").trim();
+  if (!body) return;
+  try {
+    const r = await fetch("/api/tech/send", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({body})});
+    if (r.status === 404) return toast("Sending as the technician isn't available on this server");
+    if (!r.ok) return toast(`Send failed (HTTP ${r.status})`);
+    $("techInput").value = ""; techNext = 0; pollTech(); pollDecisions();
+  } catch (e) { toast("Send failed: " + e.message); }
+}
+
+async function pollKeewano() {
+  try { renderKeewano(await getJSON("/api/keewano")); } catch (e) { renderKeewano({connected: false}); }
+}
+
+$("send").onclick = sendAlert;
+$("reset").onclick = reset;
+document.addEventListener("keydown", e => {  // keyboard shortcuts: S send, 1/2/3 simulate a reply, R reset
+  if (e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
+  const t = e.target;
+  if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName) && t.type !== "range")) return;
+  const k = e.key.toLowerCase();
+  if (k === "s" && !$("send").disabled) sendAlert();
+  else if (k === "1" || k === "2" || k === "3") simulate(k);
+  else if (k === "r") reset();
+  else return;
+  e.preventDefault();
+});
+document.querySelectorAll(".sims button").forEach(b => b.onclick = () => simulate(b.dataset.c));
+document.querySelectorAll(".chips button").forEach(b => b.onclick = () => techSend(b.dataset.t));
+$("techForm").onsubmit = e => { e.preventDefault(); techSend($("techInput").value); };
+$("minutes").oninput = renderHours;
+
+(async () => {
+  const [b, p, d, s] = await Promise.allSettled(
+    ["/api/backtest", "/api/patterns", "/api/demo-drive", "/api/swaplist"].map(getJSON));
+  if (b.status === "fulfilled") renderBacktest(b.value);
+  if (p.status === "fulfilled") renderPatterns(p.value.rows); else renderPatterns([]);
+  if (d.status === "fulfilled") renderPinned(d.value);
+  if (s.status === "fulfilled") renderSwaplist(s.value.rows); else renderSwaplist([]);
+  const src = b.status === "fulfilled" ? b.value.source : "unavailable";
+  $("source").textContent = src === "db" ? "Live engine · Backblaze drive stats" : "Sample numbers: no drive database on this server";
+  try { const st = await getJSON("/api/stage"); if (st.tech_number) { techNumber = st.tech_number; $("techNum").textContent = "· Dial " + techNumber; } } catch (e) {}
+  await restoreLive();
+  pollTech(); setInterval(pollTech, 1500);
+  pollDecisions(); setInterval(pollDecisions, 1500);
+  setInterval(pollActions, 2000); setInterval(pollCall, 1500);
+  pollAlerts(); setInterval(pollAlerts, 5000);
+  pollKeewano(); setInterval(pollKeewano, 10000);
+})();
+</script>
+</body>
+</html>

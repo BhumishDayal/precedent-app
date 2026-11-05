@@ -1,0 +1,12 @@
+{
+ "model": "WDC WUH722222ALE6L4",
+ "pattern": "197:high",
+ "scope": "same model",
+ "n": 59,
+ "died": 26,
+ "drives": 50,
+ "rate": 0.4406779661016949,
+ "enough": true,
+ "act": true,
+ "circular": false
+}

@@ -1,0 +1,322 @@
+[
+ {
+  "model": "ST12000NM0008",
+  "pattern": "5+187+188+197+198:high",
+  "n": 108,
+  "died": 49,
+  "rate": 0.454,
+  "circular": true
+ },
+ {
+  "model": "TOSHIBA MG07ACA14TA",
+  "pattern": "5+197:low",
+  "n": 180,
+  "died": 45,
+  "rate": 0.25,
+  "circular": false
+ },
+ {
+  "model": "HGST HUH721212ALN604",
+  "pattern": "5+197+198:high",
+  "n": 197,
+  "died": 38,
+  "rate": 0.193,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG07ACA14TA",
+  "pattern": "5+197:mid",
+  "n": 87,
+  "died": 31,
+  "rate": 0.356,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG07ACA14TA",
+  "pattern": "197:low",
+  "n": 354,
+  "died": 31,
+  "rate": 0.088,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG07ACA14TA",
+  "pattern": "5+197+198:mid",
+  "n": 107,
+  "died": 30,
+  "rate": 0.28,
+  "circular": false
+ },
+ {
+  "model": "ST16000NM001G",
+  "pattern": "5+187+188+197+198:high",
+  "n": 63,
+  "died": 29,
+  "rate": 0.46,
+  "circular": true
+ },
+ {
+  "model": "ST12000NM0008",
+  "pattern": "5+187+188:high",
+  "n": 97,
+  "died": 28,
+  "rate": 0.289,
+  "circular": true
+ },
+ {
+  "model": "WDC WUH722222ALE6L4",
+  "pattern": "197:high",
+  "n": 60,
+  "died": 27,
+  "rate": 0.45,
+  "circular": false
+ },
+ {
+  "model": "WDC WUH722222ALE6L4",
+  "pattern": "197:mid",
+  "n": 175,
+  "died": 23,
+  "rate": 0.131,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG08ACA16TA",
+  "pattern": "5+197:high",
+  "n": 50,
+  "died": 21,
+  "rate": 0.42,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG07ACA14TA",
+  "pattern": "5:low",
+  "n": 174,
+  "died": 20,
+  "rate": 0.115,
+  "circular": false
+ },
+ {
+  "model": "ST12000NM0008",
+  "pattern": "5+187+197+198:high",
+  "n": 70,
+  "died": 19,
+  "rate": 0.271,
+  "circular": true
+ },
+ {
+  "model": "TOSHIBA MG08ACA16TA",
+  "pattern": "5+197:mid",
+  "n": 93,
+  "died": 19,
+  "rate": 0.204,
+  "circular": false
+ },
+ {
+  "model": "HGST HUH721212ALE604",
+  "pattern": "5+197+198:high",
+  "n": 159,
+  "died": 18,
+  "rate": 0.113,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG07ACA14TA",
+  "pattern": "5+197+198:low",
+  "n": 72,
+  "died": 16,
+  "rate": 0.222,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG10ACA20TE",
+  "pattern": "5+197:high",
+  "n": 37,
+  "died": 16,
+  "rate": 0.432,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG07ACA14TA",
+  "pattern": "5+198:mid",
+  "n": 40,
+  "died": 14,
+  "rate": 0.35,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG07ACA14TA",
+  "pattern": "197+198:low",
+  "n": 160,
+  "died": 14,
+  "rate": 0.088,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG10ACA20TE",
+  "pattern": "5+197+198:high",
+  "n": 28,
+  "died": 14,
+  "rate": 0.5,
+  "circular": false
+ },
+ {
+  "model": "WDC WUH722222ALE6L4",
+  "pattern": "5+197:high",
+  "n": 26,
+  "died": 14,
+  "rate": 0.538,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG07ACA14TA",
+  "pattern": "197+198:mid",
+  "n": 53,
+  "died": 13,
+  "rate": 0.245,
+  "circular": false
+ },
+ {
+  "model": "WDC WUH721816ALE6L4",
+  "pattern": "5+197:mid",
+  "n": 595,
+  "died": 13,
+  "rate": 0.022,
+  "circular": false
+ },
+ {
+  "model": "WDC WUH721816ALE6L4",
+  "pattern": "5+197:high",
+  "n": 255,
+  "died": 12,
+  "rate": 0.047,
+  "circular": false
+ },
+ {
+  "model": "ST16000NM001G",
+  "pattern": "5+187+197+198:high",
+  "n": 53,
+  "died": 12,
+  "rate": 0.226,
+  "circular": true
+ },
+ {
+  "model": "ST12000NM0008",
+  "pattern": "187+188:mid",
+  "n": 34,
+  "died": 12,
+  "rate": 0.353,
+  "circular": true
+ },
+ {
+  "model": "TOSHIBA MG08ACA16TA",
+  "pattern": "5:low",
+  "n": 1079,
+  "died": 12,
+  "rate": 0.011,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG07ACA14TA",
+  "pattern": "5+197:high",
+  "n": 14,
+  "died": 11,
+  "rate": 0.786,
+  "circular": false
+ },
+ {
+  "model": "ST12000NM0008",
+  "pattern": "5:high",
+  "n": 63,
+  "died": 11,
+  "rate": 0.175,
+  "circular": false
+ },
+ {
+  "model": "ST12000NM0008",
+  "pattern": "187+188:low",
+  "n": 43,
+  "died": 11,
+  "rate": 0.256,
+  "circular": true
+ },
+ {
+  "model": "ST8000NM0055",
+  "pattern": "5+187:high",
+  "n": 138,
+  "died": 11,
+  "rate": 0.08,
+  "circular": true
+ },
+ {
+  "model": "HGST HUH721212ALE604",
+  "pattern": "5+197+198:mid",
+  "n": 160,
+  "died": 11,
+  "rate": 0.069,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG08ACA16TA",
+  "pattern": "5+197:low",
+  "n": 128,
+  "died": 11,
+  "rate": 0.086,
+  "circular": false
+ },
+ {
+  "model": "TOSHIBA MG10ACA20TE",
+  "pattern": "5+197:mid",
+  "n": 49,
+  "died": 10,
+  "rate": 0.204,
+  "circular": false
+ },
+ {
+  "model": "ST8000NM0055",
+  "pattern": "5+187+197+198:high",
+  "n": 102,
+  "died": 10,
+  "rate": 0.098,
+  "circular": true
+ },
+ {
+  "model": "ST12000NM0008",
+  "pattern": "5+187:high",
+  "n": 76,
+  "died": 9,
+  "rate": 0.118,
+  "circular": true
+ },
+ {
+  "model": "HGST HUH721212ALN604",
+  "pattern": "197+198:high",
+  "n": 33,
+  "died": 9,
+  "rate": 0.273,
+  "circular": false
+ },
+ {
+  "model": "HGST HUH721212ALN604",
+  "pattern": "5+197+198:mid",
+  "n": 163,
+  "died": 9,
+  "rate": 0.055,
+  "circular": false
+ },
+ {
+  "model": "ST14000NM001G",
+  "pattern": "5+187+188+197+198:high",
+  "n": 28,
+  "died": 9,
+  "rate": 0.321,
+  "circular": true
+ },
+ {
+  "model": "WDC WUH722626ALE6L4",
+  "pattern": "197:high",
+  "n": 10,
+  "died": 8,
+  "rate": 0.8,
+  "circular": false
+ }
+]

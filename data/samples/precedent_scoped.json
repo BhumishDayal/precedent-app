@@ -1,0 +1,60 @@
+{
+ "tenant": "Cedar Compute",
+ "own": {
+  "model": "WDC WUH722222ALE6L4",
+  "pattern": "197:high",
+  "scope": "your fleet",
+  "n": 11,
+  "died": 5,
+  "rate": 0.45454545454545453,
+  "enough": false,
+  "act": false
+ },
+ "network": {
+  "model": "WDC WUH722222ALE6L4",
+  "pattern": "197:high",
+  "scope": "Precedent network",
+  "n": 59,
+  "died": 26,
+  "drives": 50,
+  "rate": 0.4406779661016949,
+  "enough": true,
+  "act": true,
+  "circular": false
+ },
+ "tenants_contributing": 6,
+ "contributors": [
+  "Atlas GPU Cloud",
+  "Beacon Storage",
+  "Cedar Compute",
+  "Delta Colo",
+  "Ember AI",
+  "Fjord Cloud"
+ ],
+ "by_tenant": {
+  "Cedar Compute": {
+   "n": 11,
+   "died": 5
+  },
+  "Atlas GPU Cloud": {
+   "n": 20,
+   "died": 10
+  },
+  "Fjord Cloud": {
+   "n": 1,
+   "died": 1
+  },
+  "Beacon Storage": {
+   "n": 5,
+   "died": 2
+  },
+  "Delta Colo": {
+   "n": 9,
+   "died": 5
+  },
+  "Ember AI": {
+   "n": 13,
+   "died": 3
+  }
+ }
+}

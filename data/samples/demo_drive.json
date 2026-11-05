@@ -1,0 +1,9 @@
+{
+ "serial": "1QHPN2VX",
+ "model": "WDC WUH722222ALE6L4",
+ "pattern": "197:high",
+ "warn_date": "2026-05-29",
+ "actually_died": true,
+ "failed_on": "2026-06-09",
+ "healthy_until": "2026-05-28"
+}

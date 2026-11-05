@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident · Precedent</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f8b80'/%3E%3Cpath d='M10 24V8h7a5 5 0 0 1 0 10h-7' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #0a0d13; --panel: #121722; --line: #222a3b; --text: #eef1f7; --dim: #8b95a9; --faint: #7c8699;
+    --accent: #5eead4; --warn: #fbbf24; --bad: #f87171; --good: #4ade80;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { font-size: clamp(13px, 1.05vw, 20px); background: var(--bg); }
+  body { margin: 0; color: var(--text); font: 1rem/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 78rem; margin: 0 auto; padding: 1.4rem 1.6rem 3rem; }
+  a { color: var(--accent); }
+  .crumb { font-size: 0.8rem; color: var(--dim); }
+  h1 { margin: 0.3rem 0 0.2rem; font-size: 2rem; letter-spacing: -0.02em; }
+  h1 .mono { font-size: 1.8rem; }
+  .meta { color: var(--dim); font-size: 0.9rem; }
+  .mono { font-family: ui-monospace, Menlo, monospace; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+  .full { grid-column: 1 / -1; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 0.7rem; padding: 0.9rem 1.1rem; min-width: 0; }
+  h2 { margin: 0 0 0.6rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: .09em; color: var(--dim); font-weight: 650; }
+  .evidence { font-size: 1.7rem; font-weight: 650; line-height: 1.25; }
+  .evidence em { font-style: normal; color: var(--bad); font-weight: 850; }
+  .sub { color: var(--dim); font-size: 0.85rem; font-weight: 400; }
+  .empty { color: var(--faint); font-size: 0.9rem; }
+  .decision { font-size: 1.6rem; font-weight: 850; }
+  .decision.swap { color: var(--accent); } .decision.wait { color: #93c5fd; } .decision.show { color: var(--good); } .decision.unclear { color: var(--warn); }
+  pre.text { white-space: pre-wrap; word-break: break-word; margin: 0; font: 0.9rem/1.45 ui-monospace, Menlo, monospace; color: #d6dbe6; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.35rem 0.4rem; border-bottom: 1px solid var(--line); }
+  th { color: var(--dim); font-weight: 500; font-size: 0.75rem; }
+  .died { color: var(--bad); font-weight: 700; } .alive { color: var(--good); }
+  .tag { display: inline-block; padding: 0.05rem 0.5rem; border-radius: 999px; font-size: 0.7rem; font-weight: 700; background: #1d2b1f; color: var(--good); }
+  .tag.warn { background: #3b2f12; color: var(--warn); } .tag.bad { background: #3a1616; color: var(--bad); }
+  .act { display: flex; gap: 0.7rem; align-items: baseline; padding: 0.35rem 0; border-bottom: 1px solid var(--line); }
+  .act b { flex: 0 0 4.5rem; color: var(--accent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: .06em; }
+  .act span.what { flex: 1; }
+  .msg { padding: 0.35rem 0; border-bottom: 1px solid var(--line); white-space: pre-wrap; font-size: 0.9rem; }
+  .msg .who { color: var(--dim); font-size: 0.75rem; }
+  .live { color: var(--good); font-weight: 700; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="crumb"><a id="back" href="/app">← Open in the console</a> · incident <span class="mono" id="aid"></span></div>
+  <h1 id="title">Loading incident…</h1>
+  <div class="meta" id="meta"></div>
+  <div class="grid">
+    <section><h2>Evidence: identical drives</h2><div id="evidence" class="empty">–</div></section>
+    <section><h2>Decision</h2><div id="decision" class="empty">No decision yet.</div></section>
+    <section><h2>Call transcript</h2><div id="call" class="empty">No call for this alert.</div></section>
+    <section><h2>Summary sent to the technician</h2><div id="summary" class="empty">No summary yet.</div></section>
+    <section><h2>Similar drives <span class="sub">most recent with the same model and warning</span></h2><div id="similar" class="empty">–</div></section>
+    <section><h2>Actions</h2><div id="actions" class="empty">No actions yet.</div></section>
+    <section><h2>Technician thread</h2><div id="thread" class="empty">No messages yet.</div></section>
+    <section><h2>Keewano</h2><div id="keewano" class="empty">Checking Keewano…</div></section>
+  </div>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const fmt = n => (n == null || n === "" || isNaN(n) ? "–" : Number(n).toLocaleString());
+const time = t => t ? new Date(t).toLocaleString() : "";
+const CHOICE = {swap: "Replace", wait: "Wait", show: "Asked for details", unclear: "No clear answer"};
+const alertId = decodeURIComponent(location.pathname.split("/").pop());
+async function get(url) {  // null on any error: every panel degrades to its empty state
+  try { const r = await fetch(url); return r.ok ? await r.json() : null; } catch (e) { return null; }
+}
+const forThis = x => x && (!x.alert_id || x.alert_id === alertId);
+
+async function load() {
+  $("aid").textContent = alertId;
+  $("back").href = "/app/incidents/" + encodeURIComponent(alertId);
+  const inc = await get(`/api/incident/${encodeURIComponent(alertId)}`);
+  if (!inc || !inc.found) {
+    $("title").textContent = inc ? "Incident not found" : "Couldn't load this incident";
+    $("meta").textContent = inc ? "This incident isn't in the current workspace. It may have been archived." : "Check that the server is running, then refresh the page.";
+    return;
+  }
+  const a = inc.alert, p = inc.precedent || a, H = fmt(inc.horizon_days || 30);
+  document.title = `${a.serial} · Precedent`;
+  $("title").innerHTML = `Drive <span class="mono">${esc(a.serial)}</span>`;
+  $("meta").innerHTML = `${esc(a.model)} · SMART warning <b class="mono">${esc(a.pattern)}</b> · alerted ${esc(time(a.ts))} by ${esc(a.channel === "call" ? "call" : "text")}`;
+  $("evidence").className = "";
+  $("evidence").innerHTML = `<div class="evidence">${fmt(p.n)} drives like it. <em>${fmt(p.died)} failed</em> within ${H} days.</div>` +
+    `<div class="sub">${p.rate != null ? Math.round(p.rate * 100) + "% of identical drives" : ""}${p.scope ? " · " + esc(p.scope) : ""} · this drive is left out of its own history</div>`;
+
+  const d = inc.decisions[0];
+  if (d) { $("decision").className = "decision " + d.choice; $("decision").innerHTML = `${esc(CHOICE[d.choice] || d.choice)} <span class="sub">at ${esc(time(d.ts))}${d.keewano_logged === true ? " · stored in Keewano" : d.keewano_logged === false ? " · saved locally" : ""}</span>`; }
+
+  const sim = inc.similar || [];
+  if (sim.length) {
+    $("similar").className = "";
+    $("similar").innerHTML = `<table><thead><tr><th>Serial</th><th>Warned</th><th>Outcome</th></tr></thead><tbody>` +
+      sim.map(s => `<tr><td class="mono">${esc(s.serial)}</td><td>${esc(String(s.warn_date).slice(0, 10))}</td>` +
+        (s.censored && !s.died ? `<td class="sub">outcome not known yet</td></tr>` :
+        `<td class="${s.died ? "died" : "alive"}">${s.died ? "failed " + esc(String(s.failed_on || "").slice(0, 10)) : `survived ${H} days`}</td></tr>`)).join("") + "</tbody></table>";
+  }
+  if (inc.actions.length) {
+    $("actions").className = "";
+    $("actions").innerHTML = inc.actions.map(r => {
+      const st = String(r.status || "ok"), cls = /fail|error/i.test(st) ? "bad" : /retry|dry|pending|gap/i.test(st) ? "warn" : "";
+      return `<div class="act"><b>${esc(r.sponsor)}</b><span class="what">${esc(typeof r.detail === "string" ? r.detail : JSON.stringify(r.detail))}</span><span class="tag ${cls}">${esc(st.replace(/dry.?run/i, "practice run"))}</span></div>`;
+    }).join("");
+  }
+
+  const [call, summary, thread, kw] = await Promise.all(
+    ["/api/call-status", "/api/summary/latest", "/api/tech/thread", "/api/keewano"].map(get));
+  if (forThis(call) && (call.transcript || call.state)) {
+    const transcript = call.transcript && call.transcript !== "[]" ? call.transcript : "";
+    $("call").className = "";
+    $("call").innerHTML = `<div class="sub">${esc(String(call.state || "").replace(/dry.?run/i, "practice run (no Dial key on this server)"))}${call.decision ? " · decision: " + esc(CHOICE[call.decision] || call.decision) : ""}</div>` +
+      (transcript ? `<pre class="text">${esc(transcript)}</pre>` : "");
+    if (!d && call.decision) { $("decision").className = "decision " + call.decision;
+      $("decision").innerHTML = call.decision === "unclear" ? `No clear answer <span class="sub">the details went to the technician</span>` : esc(CHOICE[call.decision] || call.decision); }
+  }
+  const sText = summary && (summary.text || summary.body || summary.summary);
+  if (forThis(summary) && sText) { $("summary").className = ""; $("summary").innerHTML = `<pre class="text">${esc(sText)}</pre>`; }
+  const msgs = (thread ? (Array.isArray(thread) ? thread : thread.rows || []) : []).filter(m => !a.ts || String(m.ts) >= String(a.ts));
+  if (msgs.length) {
+    msgs.sort((x, y) => String(x.ts).localeCompare(String(y.ts)));
+    const who = m => m.direction === "to_tech" ? "Precedent → technician" : m.direction === "from_tech" ? "Technician → Precedent" : `${m.from || "Precedent"} → ${m.to || "technician"}`;
+    $("thread").className = "";
+    $("thread").innerHTML = msgs.slice(-20).map(m => `<div class="msg"><div class="who">${esc(who(m))} · ${esc(time(m.ts))}</div>${esc(m.body)}</div>`).join("");
+  }
+  if (kw && kw.connected) {
+    const decs = (kw.decisions || []).filter(x => x.decision);
+    $("keewano").className = "";
+    $("keewano").innerHTML = `<span class="live">● Live from Keewano</span> <span class="sub">· ${fmt((kw.rows || []).length)} pattern rows` +
+      (decs.length ? " · decisions: " + decs.map(x => `${esc(x.decision)} ${fmt(x.n)}`).join(", ") : "") + `</span>`;
+  } else $("keewano").textContent = "Keewano isn't connected on this server.";
+}
+load().catch(() => {
+  $("title").textContent = "Couldn't load this incident";
+  $("meta").textContent = "Something went wrong reading the incident. Refresh the page to try again.";
+});
+</script>
+</body>
+</html>

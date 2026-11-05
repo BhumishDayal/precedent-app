@@ -1,0 +1,392 @@
+{
+ "level": "pod",
+ "datacenter": "sac2",
+ "vault_id": "3016",
+ "pod_id": "17",
+ "slots": [
+  {
+   "slot": "0000",
+   "serial": "1PG8S88V",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0000",
+   "serial": "1PH2SJZX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "failed"
+  },
+  {
+   "slot": "0000",
+   "serial": "1QHS3W9X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "failed"
+  },
+  {
+   "slot": "0001",
+   "serial": "1QHPSDRX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0002",
+   "serial": "1QHS3UEX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0003",
+   "serial": "1QHPJTDX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0004",
+   "serial": "1QHPKWWX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0005",
+   "serial": "1QHRA68X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0006",
+   "serial": "1QHS3XPX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0007",
+   "serial": "1QHRAB4X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0008",
+   "serial": "1QHRPARX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0009",
+   "serial": "1QHRP7YX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0010",
+   "serial": "1QHRP81X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0011",
+   "serial": "1QHRVPGX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "failed"
+  },
+  {
+   "slot": "0011",
+   "serial": "21JYNKHN",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0012",
+   "serial": "1QHRVUXX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0013",
+   "serial": "1QHPN3XX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0014",
+   "serial": "21JXWWNN",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0014",
+   "serial": "1QHPN2VX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "failed"
+  },
+  {
+   "slot": "0015",
+   "serial": "1QHRPNSX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0016",
+   "serial": "1QHRVYNX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0017",
+   "serial": "1QHPJ01X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0018",
+   "serial": "1QHRPJ0X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0019",
+   "serial": "1QHR9S3X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0020",
+   "serial": "1QHRVAHX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0021",
+   "serial": "1QHR9RTX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0022",
+   "serial": "1QHR9Z6X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0023",
+   "serial": "1QHPK6TX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0024",
+   "serial": "1QHRNTJX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0025",
+   "serial": "1QHPMVVX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0026",
+   "serial": "1QHRPNTX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0027",
+   "serial": "1QHRP75X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0028",
+   "serial": "1QHRV01X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0029",
+   "serial": "1QHRP8TX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0030",
+   "serial": "1QHR9MWX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0031",
+   "serial": "1QHP81NX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0032",
+   "serial": "1QHRUXGX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0033",
+   "serial": "1QHR9YJX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0034",
+   "serial": "1QHR9XHX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0035",
+   "serial": "1QHS3Z7X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0036",
+   "serial": "1QHRA4NX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0037",
+   "serial": "1QHR9MDX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0038",
+   "serial": "1QHPKL0X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0039",
+   "serial": "1QHRP82X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0040",
+   "serial": "1QHPJ1PX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0041",
+   "serial": "1QHRV2YX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0042",
+   "serial": "1QHRVSEX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0043",
+   "serial": "1QHPN3RX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0044",
+   "serial": "1QHRV54X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0045",
+   "serial": "1QHRVHDX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0046",
+   "serial": "1QHS3Z9X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0047",
+   "serial": "1QHPM9ZX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0048",
+   "serial": "1QHRVN4X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0049",
+   "serial": "1QHRA7XX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0050",
+   "serial": "1QHRPAZX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0051",
+   "serial": "1QHRAE6X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0052",
+   "serial": "1QHS3MPX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0053",
+   "serial": "1QHRVS3X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0054",
+   "serial": "1QHPN4JX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0055",
+   "serial": "1QHR9T3X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0056",
+   "serial": "1QHPM5RX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0057",
+   "serial": "1QHRVUZX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0058",
+   "serial": "1QHPJMYX",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  },
+  {
+   "slot": "0059",
+   "serial": "1QHRV59X",
+   "model": "WDC WUH722222ALE6L4",
+   "status": "ok"
+  }
+ ]
+}

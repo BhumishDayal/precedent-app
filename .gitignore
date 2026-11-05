@@ -1,0 +1,15 @@
+.venv/
+data/raw/
+data/daily/
+data/*.duckdb*
+.env
+__pycache__/
+data/*.jsonl
+data/public_url.txt
+rehearsal/
+data/archive/
+data/darwin_cache.json
+data/*.sqlite*
+data/locations.parquet
+data/keewano_lua.json
+data/keewano_at_risk.json

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect your fleet · Precedent</title>
+<meta name="description" content="Connect your fleet to Precedent: API key, collector, channels and MCP for agents.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23137f78'/%3E%3Cpath d='M11 23V9h6.5a4.5 4.5 0 0 1 0 9H11' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: oklch(0.99 0.002 200);
+    --surface: oklch(1 0 0);
+    --sunken: oklch(0.97 0.004 200);
+    --line: oklch(0.915 0.006 200);
+    --line-strong: oklch(0.86 0.008 200);
+    --ink: oklch(0.21 0.012 220);
+    --ink-2: oklch(0.40 0.014 220);
+    --ink-3: oklch(0.50 0.012 220);
+    --accent: oklch(0.55 0.105 185);
+    --accent-ink: oklch(0.42 0.09 185);
+    --accent-soft: oklch(0.955 0.03 185);
+    --on-accent: oklch(0.99 0 0);
+    --code-bg: oklch(0.22 0.012 220);
+    --code-ink: oklch(0.93 0.005 220);
+    --code-dim: oklch(0.68 0.012 220);
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --r-card: 14px; --r-ctl: 10px;
+    --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --gutter: clamp(16px, 4vw, 40px);
+    --z-sticky: 10; --z-toast: 50;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 16.5px; line-height: 1.6; -webkit-font-smoothing: antialiased; font-feature-settings: "cv11", "ss01"; }
+  a { color: inherit; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+  p { text-wrap: pretty; margin: 0; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 var(--gutter); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  code { font-family: var(--mono); font-size: 0.88em; }
+  p code, li code, td code { background: var(--sunken); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; overflow-wrap: anywhere; }
+
+  .nav { position: sticky; top: 0; z-index: var(--z-sticky); background: oklch(0.99 0.002 200 / 0.92); border-bottom: 1px solid var(--line); }
+  @supports (backdrop-filter: blur(8px)) { .nav { backdrop-filter: saturate(1.4) blur(8px); background: oklch(0.99 0.002 200 / 0.8); } }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; max-width: 1180px; }
+  .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 650; font-size: 17px; letter-spacing: -0.01em; text-decoration: none; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 0 16px; border-radius: 999px; font: inherit; font-size: 14px; font-weight: 550; text-decoration: none; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); cursor: pointer; transition: border-color .2s var(--ease-out), transform .2s var(--ease-out); white-space: nowrap; }
+  .btn:hover { border-color: var(--ink-3); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--on-accent); }
+  .btn-primary:hover { background: oklch(0.36 0.08 185); border-color: oklch(0.36 0.08 185); }
+
+  .intro { padding: clamp(48px, 8vw, 96px) 0 clamp(40px, 6vw, 64px); }
+  .intro h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.06; letter-spacing: -0.03em; font-weight: 650; }
+  .intro p { margin-top: 18px; font-size: clamp(17px, 1.5vw, 19px); color: var(--ink-2); max-width: 60ch; }
+  .meta { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; color: var(--ink-3); }
+  .meta span { display: inline-flex; align-items: center; gap: 8px; }
+  .meta svg { color: var(--accent-ink); }
+
+  .steps { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+  .step { counter-increment: s; display: grid; grid-template-columns: 48px minmax(0, 1fr); column-gap: clamp(16px, 3vw, 32px); position: relative; padding-bottom: clamp(48px, 7vw, 72px); }
+  .step::before { content: counter(s); width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-weight: 650; font-size: 18px; background: var(--accent-ink); color: var(--on-accent); font-variant-numeric: tabular-nums; }
+  .step::after { content: ""; position: absolute; left: 24px; top: 60px; bottom: 12px; width: 1px; background: var(--line-strong); }
+  .step:last-child::after { display: none; }
+  .step-body { min-width: 0; padding-top: 8px; }
+  .step h2 { font-size: clamp(1.4rem, 2.4vw, 1.75rem); letter-spacing: -0.02em; font-weight: 650; line-height: 1.2; }
+  .step-body > p { margin-top: 12px; color: var(--ink-2); max-width: 68ch; }
+  .step h3 { margin-top: 28px; font-size: 15px; font-weight: 600; color: var(--ink); }
+  .step h3 + p { margin-top: 4px; color: var(--ink-2); font-size: 15px; max-width: 68ch; }
+
+  .code { margin-top: 14px; position: relative; background: var(--code-bg); color: var(--code-ink); border-radius: var(--r-ctl); }
+  .code::before { content: ""; position: absolute; left: 0; right: 0; top: 47px; height: 1px; background: oklch(0.3 0.012 220); }
+  .code pre { margin: 0; padding: 62px 18px 16px; overflow-x: auto; font-family: var(--mono); font-size: 13.5px; line-height: 1.65; white-space: pre; }
+  .code code { background: none; border: 0; padding: 0; border-radius: 0; color: inherit; font-size: inherit; overflow-wrap: normal; }
+  .code .c { color: var(--code-dim); }
+  .copy { position: absolute; top: 9px; right: 9px; z-index: 1; display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-radius: 8px; border: 1px solid oklch(0.38 0.012 220); background: oklch(0.27 0.012 220); color: var(--code-ink); font: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; transition: background-color .15s, border-color .15s; }
+  .copy:hover { background: oklch(0.32 0.012 220); border-color: oklch(0.5 0.012 220); }
+  .copy .done { display: none; }
+  .copy.ok { border-color: var(--accent); }
+  .copy.ok .idle { display: none; } .copy.ok .done { display: inline-flex; }
+  .copy span { display: inline-flex; align-items: center; gap: 6px; }
+
+  .channels { margin-top: 20px; border: 1px solid var(--line); border-radius: var(--r-card); background: var(--surface); overflow: hidden; }
+  .channel { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 8px 24px; padding: 18px 20px; border-top: 1px solid var(--line); }
+  .channel:first-child { border-top: 0; }
+  .channel .name { font-weight: 600; }
+  .channel .vars { display: flex; flex-wrap: wrap; gap: 6px; }
+  .channel .vars code { background: var(--sunken); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; font-size: 12.5px; }
+  .channel p { margin-top: 8px; font-size: 14.5px; color: var(--ink-2); }
+  @media (max-width: 640px) { .channel { grid-template-columns: 1fr; } }
+
+  .hint { margin-top: 16px; display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; background: var(--accent-soft); border-radius: var(--r-ctl); font-size: 15px; color: var(--ink); }
+  .hint svg { flex: none; margin-top: 3px; color: var(--accent-ink); }
+
+  .agents { margin-top: 8px; margin-bottom: clamp(56px, 8vw, 96px); border: 1px solid var(--line-strong); border-radius: var(--r-card); background: var(--surface); padding: clamp(22px, 4vw, 36px); }
+  .agents-head { display: flex; align-items: center; gap: 14px; }
+  .agents-head .ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent-ink); flex: none; }
+  .agents h2 { font-size: clamp(1.3rem, 2.2vw, 1.6rem); letter-spacing: -0.02em; font-weight: 650; }
+  .agents > p { margin-top: 12px; color: var(--ink-2); max-width: 68ch; }
+  .tools { margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+  .tool { padding: 14px 0; border-bottom: 1px solid var(--line); padding-right: 16px; }
+  .tool code { font-size: 14px; font-weight: 500; color: var(--accent-ink); }
+  .tool p { margin-top: 2px; font-size: 14px; color: var(--ink-2); }
+
+  footer { border-top: 1px solid var(--line); padding: 32px 0 48px; font-size: 14px; color: var(--ink-3); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; max-width: 1180px; }
+  footer a { text-decoration: none; } footer a:hover { color: var(--ink); }
+
+  .sr-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 480px) {
+    .step { grid-template-columns: 36px minmax(0, 1fr); }
+    .step::before { width: 36px; height: 36px; font-size: 15px; }
+    .step::after { left: 18px; top: 46px; }
+    .step-body { padding-top: 3px; }
+    .code pre { font-size: 12.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="Precedent home">
+      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="oklch(0.42 0.09 185)"/><path d="M11 23V9h6.5a4.5 4.5 0 0 1 0 9H11" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Precedent
+    </a>
+    <a class="btn btn-primary" href="/app">Open console</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <h1>Connect your fleet</h1>
+    <p>Three steps: an API key, a collector that streams SMART readings, and the channels where your on-call should hear about it. Agents can connect over MCP.</p>
+    <div class="meta">
+      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Needs smartmontools + Python</span>
+      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Outbound HTTPS only</span>
+      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>One API key</span>
+    </div>
+  </section>
+
+  <ol class="steps">
+    <li class="step">
+      <div class="step-body">
+        <h2>Create an API key</h2>
+        <p>On the Precedent server, set <code>PRECEDENT_API_KEYS</code> to a comma-separated list of keys. Every request then sends one of them in the <code>X-Precedent-Key</code> header.</p>
+        <h3>On the Precedent server</h3>
+        <div class="code"><pre><code>export PRECEDENT_API_KEYS=pk_live_xxx,pk_live_yyy</code></pre></div>
+        <h3>On each machine that reports</h3>
+        <div class="code"><pre><code>export PRECEDENT_KEY=pk_live_xxx</code></pre></div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step-body">
+        <h2>Install the collector</h2>
+        <p>The collector reads every disk with <code>smartctl</code> and POSTs the readings to <code>/v1/telemetry</code>. Run it from cron or systemd.</p>
+        <div class="code"><pre><code>pip install httpx
+PRECEDENT_URL=https://&lt;your-precedent-host&gt; PRECEDENT_KEY=$PRECEDENT_KEY python -m precedent.collector</code></pre></div>
+        <h3>Or send a reading yourself</h3>
+        <p>Any script can post to the REST API directly.</p>
+        <div class="code"><pre><code>curl -X POST $PRECEDENT_URL/v1/telemetry \
+  -H "X-Precedent-Key: $PRECEDENT_KEY" \
+  -H 'content-type: application/json' \
+  -d '{"serial":"1QHPN2VX","model":"WDC WUH722222ALE6L4","smart":{"197":120},"site":"sac2"}'</code></pre></div>
+      </div>
+    </li>
+
+    <li class="step">
+      <div class="step-body">
+        <h2>Connect channels</h2>
+        <p>Set the environment variables for the channels you use on the Precedent server. Each alert carries the evidence and a link to the incident.</p>
+        <div class="channels">
+          <div class="channel">
+            <div class="name">Slack</div>
+            <div>
+              <div class="vars"><code>SLACK_WEBHOOK_URL</code><code>SLACK_SIGNING_SECRET</code></div>
+              <p>Set the app's interactivity URL to <code>&lt;host&gt;/slack/actions</code> so the Swap and Wait buttons work.</p>
+            </div>
+          </div>
+          <div class="channel">
+            <div class="name">Dial</div>
+            <div>
+              <div class="vars"><code>DIAL_API_KEY</code><code>DIAL_FROM_NUMBER_ID</code><code>ONCALL_PHONE</code></div>
+              <p>A call or text to the on-call, who replies 1 to swap or 2 to wait.</p>
+            </div>
+          </div>
+          <div class="channel">
+            <div class="name">Discord, Teams, webhook</div>
+            <div>
+              <p style="margin-top:0">Paste the incoming-webhook URL for Discord or Microsoft Teams, or a generic webhook URL for your own bots and agents.</p>
+            </div>
+          </div>
+        </div>
+        <div class="hint">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <span>Test a channel: send a sample alert with <code>POST /api/integrations/test/slack</code></span>
+        </div>
+        <div class="code"><pre><code>curl -X POST $PRECEDENT_URL/api/integrations/test/slack -H "X-Precedent-Key: $PRECEDENT_KEY"</code></pre></div>
+      </div>
+    </li>
+  </ol>
+
+  <section class="agents" aria-labelledby="agents-title">
+    <div class="agents-head">
+      <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9.5 16.5h5"/></svg></div>
+      <h2 id="agents-title">For agents</h2>
+    </div>
+    <p>An SRE agent, a datacenter ops bot or Claude can ask Precedent directly over MCP, with the same API key.</p>
+    <div class="code"><pre><code>claude mcp add --transport http precedent https://&lt;your-precedent-host&gt;/mcp-public/ --header "X-Precedent-Key: $PRECEDENT_KEY"</code></pre></div>
+    <div class="tools">
+      <div class="tool"><code>check_warning</code><p>What happened to every identical drive</p></div>
+      <div class="tool"><code>report_telemetry</code><p>Send a SMART reading</p></div>
+      <div class="tool"><code>get_drive</code><p>One drive's history and location</p></div>
+      <div class="tool"><code>log_decision</code><p>Record what the on-call decided</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><a href="/">Precedent</a> · Data: Backblaze public drive stats, January to June 2026</span>
+    <span><a href="/app">Open console</a></span>
+  </div>
+</footer>
+
+<div class="sr-live" aria-live="polite" id="live"></div>
+
+<script>
+  (function () {
+    var live = document.getElementById('live');
+    var icon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
+    var tick = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+    function fallbackCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    document.querySelectorAll('.code').forEach(function (block) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy';
+      btn.setAttribute('aria-label', 'Copy code');
+      btn.innerHTML = '<span class="idle">' + icon + 'Copy</span><span class="done">' + tick + 'Copied</span>';
+      btn.addEventListener('click', function () {
+        var text = block.querySelector('code').textContent;
+        var done = function () {
+          btn.classList.add('ok'); live.textContent = 'Copied to clipboard';
+          clearTimeout(btn._t); btn._t = setTimeout(function () { btn.classList.remove('ok'); }, 1600);
+        };
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+        } else { fallbackCopy(text); done(); }
+      });
+      block.appendChild(btn);
+    });
+  })();
+</script>
+</body>
+</html>
